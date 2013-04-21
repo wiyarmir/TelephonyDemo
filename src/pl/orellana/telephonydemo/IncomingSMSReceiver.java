@@ -1,5 +1,7 @@
 package pl.orellana.telephonydemo;
 
+import java.util.Locale;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,14 +30,15 @@ public class IncomingSMSReceiver extends BroadcastReceiver {
 					for (Object pdu : pdus) {
 						SmsMessage sms = SmsMessage.createFromPdu((byte[]) pdu);
 
-						if (sms.getDisplayMessageBody().equals("REQUEST")) {
+						if (sms.getDisplayMessageBody().toUpperCase(Locale.US)
+								.equals("REQUEST")) {
 							String text = "";
 
 							text += sp.getString("answertext", "") + "\n";
-							if (sp.getBoolean("", true)) {
+							if (sp.getBoolean("includestudent", true)) {
 								text += "Guillermo Orellana\n";
 							}
-							if (sp.getBoolean("", true)) {
+							if (sp.getBoolean("includelocation", true)) {
 								LocationManager lm = (LocationManager) context
 										.getSystemService(Context.LOCATION_SERVICE);
 								Location loc = lm
